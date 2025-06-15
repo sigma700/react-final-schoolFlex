@@ -16,6 +16,8 @@ export default function Finding() {
       setError(null);
       try {
         const backUrl = import.meta.env.VITE_BACKEND_URL;
+        console.log(backUrl);
+
         const url = searchQuery
           ? //INTRODUCE REACT HOOK FOR DEBOUNCE
             `${backUrl}/api/schools/search-exact?name=${encodeURIComponent(
