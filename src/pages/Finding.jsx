@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./components/navbar";
-import NavLarge from "./components/navbar-lg";
 import { Form, Link } from "react-router-dom";
+import { Slidetabs } from "./components/navbar-lg";
 
 export default function Finding() {
   const [schools, setSchools] = useState([]);
@@ -106,16 +106,29 @@ export default function Finding() {
                     }
             `}
       </style>
-      <h1>Logo</h1>
+      <div className="flex gap-[3px] items-center">
+        <h1 className="lg:p-[10px] lg:text-[30px]">
+          Edu<span className="text-blue-700 font-bold text-[35px]">Find</span>
+        </h1>
+        <div>
+          <Link to={"/"}>
+            <img
+              className="w-[60px] rounded-[50%] border"
+              src="Gemini_Generated_Image_17nrxp17nrxp17nr.png"
+              alt="logo for the website"
+            />
+          </Link>
+        </div>
+      </div>
       <Navbar />
-      <NavLarge />
+      {/* <NavLarge /> */}
 
       <div className="mt-[30px]">
         <Form
           onSubmit={handleSearchSubmit}
           method="post"
           action=""
-          className="flex items-center gap-[10px] text-white lg:justify-center"
+          className="ml-[20px] flex items-center gap-[20px] lg:gap-[10px] text-white lg:justify-center"
         >
           <input
             className="p-[10px] bg-[#001822] rounded-[10px] lg:w-[500px] lg:p-[10px]"
@@ -131,42 +144,8 @@ export default function Finding() {
             <img src="/search.svg" alt="" />
           </button>
           <div className="hidden lg:flex gap-[10px]">
-            <div className="text-black">
-              <div className="flex items-center gap-[10px]">
-                <div className="bg-white p-[10px] border border-black rounded-[50%] hover:bg-transparent hover:cursor-pointer hover:transition-colors hover:duration-[0.4s] duration-[0.3s]">
-                  <img src="/headset.svg" alt="" />
-                </div>
-                <p>Call for support</p>
-              </div>
-            </div>
-            <div className="text-black">
-              <Link
-                className="flex items-center gap-[10px] "
-                to={"/collection"}
-              >
-                <div className="flex bg-white p-[10px] border border-black rounded-[50%] hover:bg-transparent hover:cursor-pointer hover:transition-colors hover:duration-[0.4s] duration-[0.3s]">
-                  <img src="/package-open.svg" alt="" />
-                </div>
-                <p>Your Collection</p>
-              </Link>
-            </div>
-
-            <div className="text-black">
-              <div className="flex items-center gap-[10px]">
-                <div className="bg-white p-[10px] border border-black rounded-[50%] hover:bg-transparent hover:cursor-pointer hover:transition-colors hover:duration-[0.4s] duration-[0.3s]">
-                  <img src="/sun.svg" alt="" />
-                </div>
-                <p>Dark/Light Mode</p>
-              </div>
-            </div>
-            <div className="text-black">
-              <Link to={"/dashboard"} className="flex items-center gap-[10px]">
-                <div className="bg-white p-[10px] border border-black rounded-[50%] hover:bg-transparent hover:cursor-pointer hover:transition-colors hover:duration-[0.4s] duration-[0.3s]">
-                  <img src="/user.svg" alt="" />
-                </div>
-                <p>Dashboard</p>
-              </Link>
-            </div>
+            <Slidetabs />
+            {/* <Toggler /> */}
           </div>
         </Form>
         <div>
