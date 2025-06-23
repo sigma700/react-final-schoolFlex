@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useAuthStore } from "../store/authStore";
+import Toast from "./components/toast";
+import ToastElement from "./components/toast";
 
 export default function Verify() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const { verifMail, isLoading, error } = useAuthStore();
+  const { verifMail, isLoading, error, isAuthenticated } = useAuthStore();
 
   const handleChange = (e, index) => {
     const value = e.target.value;
@@ -39,7 +41,7 @@ export default function Verify() {
   };
 
   return (
-    <main className="bg-gradient-to-r from-violet-600 to-indigo-600 h-screen flex justify-center items-center">
+    <main className="bg-gradient-to-r flex-col lg:gap-[30px] from-violet-600 to-indigo-600 h-screen flex justify-center items-center">
       <div className="flex flex-col w-full h-full lg:h-fit items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl shadow-xl shadow-sky-100 lg:p-[30px] max-w-fit lg:mx-8 lg:my-8">
         <h2 className="text-sky-600 text-[35px] mb-4 lg:text-[30px] font-bold">
           Verify Your Email
@@ -81,6 +83,7 @@ export default function Verify() {
           </a>
         </span>
       </div>
+      {isAuthenticated ? <ToastElement /> : ""}
     </main>
   );
 }
