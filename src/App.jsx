@@ -16,6 +16,7 @@ import Listing from "./pages/Listing";
 import Collection from "./pages/Collection";
 import Dashboard from "./pages/Dashboard";
 import Layout from "./pages/components/Layout";
+import Signup from "./pages/Signup";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
   { path: "/finding/:id", element: <School /> },
   { path: "/collection", element: <Collection /> },
   { path: "/dashboard", element: <Dashboard /> },
+  { path: "/signup", element: <Signup /> },
 ]);
 
 export default function App() {
