@@ -19,7 +19,7 @@ export default function Signup() {
     await signUp(email, password, name);
     console.log(name, email, password);
   };
-
+  //TODO:Add some form validation stuff for better useabillity!
   return (
     <main className="bg-gradient-to-r from-violet-600 to-indigo-600 h-screen flex justify-center items-center">
       <div className="bg-white p-[20px] rounded-2xl text-center">
