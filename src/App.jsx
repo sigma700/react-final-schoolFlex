@@ -17,6 +17,7 @@ import Collection from "./pages/Collection";
 import Dashboard from "./pages/Dashboard";
 import Layout from "./pages/components/Layout";
 import Signup from "./pages/Signup";
+import Verify from "./pages/Verify";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
   { path: "/collection", element: <Collection /> },
   { path: "/dashboard", element: <Dashboard /> },
   { path: "/signup", element: <Signup /> },
+  { path: "/verify", element: <Verify /> },
 ]);
 
 export default function App() {

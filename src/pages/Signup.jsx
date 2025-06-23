@@ -41,7 +41,7 @@ export default function Signup() {
             onChange={(e) => setName(e.target.value)}
             type="text"
             placeholder="Full Names"
-            className="bg-white border-gray-700 border rounded-[5px] lg:p-[10px] w-full"
+            className="bg-white border-gray-700 border rounded-[5px] lg:p-[10px] w-full p-[10px]"
           />
 
           <label className="float-left font-light" htmlFor="email">
@@ -52,7 +52,7 @@ export default function Signup() {
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Email Adress"
-            className="bg-white border rounded-[5px] lg:p-[10px] w-full"
+            className="bg-white border rounded-[5px] lg:p-[10px] w-full p-[10px]"
           />
 
           <label className="float-left font-light" htmlFor="email">
@@ -63,7 +63,7 @@ export default function Signup() {
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
-            className="bg-white border-gray-700 border rounded-[5px] lg:p-[10px] w-full"
+            className="bg-white border-gray-700 border rounded-[5px] lg:p-[10px] w-full p-[10px]"
           />
 
           <label className="float-left font-light" htmlFor="email">
@@ -74,7 +74,7 @@ export default function Signup() {
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Confirm Password"
-            className="bg-white border-gray-700 border rounded-[5px] lg:p-[10px] w-full"
+            className="bg-white border-gray-700 border rounded-[5px] lg:p-[10px] w-full p-[10px]"
           />
           <button
             className={`
