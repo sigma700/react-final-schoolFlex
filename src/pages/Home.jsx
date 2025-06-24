@@ -1,11 +1,12 @@
 import AOS from "aos";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Loader from "./components/loader";
 
 export function meta() {
   return [
     { title: "Home" },
-    { name: "description", content: "Welcome to React Router!" },
+    { name: "Edufind", content: "Welcome to React Router!" },
   ];
 }
 
@@ -15,19 +16,20 @@ export function meta() {
 
 export default function Home() {
   const [serverData, setBackendData] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     const url = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
     console.log(url);
 
-    fetch(`${url}/api/schools`)
+    fetch(`${url}/api/schools/category/${selectedCategory}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
 
         setBackendData(data);
       });
-  }, []);
+  }, [selectedCategory]);
 
   console.log({ serverData });
 
@@ -74,7 +76,7 @@ export default function Home() {
               Find a School
             </Link>
             <Link
-              to={"/listing"}
+              to={"/signup"}
               className="bg-black p-[10px] font-extralight border-yellow-500 border active:bg-[#00df82] active:border-none active:text-black hover:bg-[#00df82] hover:border-none hover:cursor-pointer hover:transition-colors hover:duration-[0.2s] duration-[0.3s]"
             >
               List your School
@@ -82,78 +84,161 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="bg-[#fbf4da] text-black p-[5px]">
-        <h2 className="text-center text-[30px]">Quick Search</h2>
+
+      <h2 className="font-bold text-center lg:text-[30px] mt-[30px]">
+        Featured Categories
+      </h2>
+
+      <div>
         <form
-          method="post"
-          className="flex items-center gap-[10px] text-white lg:justify-center"
+          className="grid grid-cols-1 gap-[30px] lg:grid-cols-4 lg:gap-[10px] md:grid-cols-2"
+          action="post"
         >
-          <input
-            className="p-[10px] bg-[#001822] rounded-[10px] lg:w-[500px] lg:p-[20px]"
-            type="text"
-            placeholder="Enter school name"
-          />
-          <button
-            className="bg-white p-[10px] rounded-[50%] border border-black lg:hover:cursor-pointer lg:hover:bg-transparent lg:rounded-[10px] lg:hover:rounded-[50%] lg:hover:transition-all lg:hover:duration-[0.3s] duration-[0.4s]"
-            type="submit"
+          <Input
+            type="radio"
+            name="SchoolCategory"
+            checked={selectedCategory === "Primary"}
+            onChange={() => setSelectedCategory("Primary")}
+            value="Primary
+           "
           >
-            <img src="/search.svg" alt="" />
-          </button>
+            <img
+              className="w-[400px] h-[400px] object-cover rounded-2xl opacity-[0.8] hover:opacity-[1.0] hover:transition-all hover:duration-[0.3s] duration-[0.3s] hover:scale-[1.007]"
+              src="https://images.pexels.com/photos/8088231/pexels-photo-8088231.jpeg"
+              alt=""
+            />
+            <h1 className="font-extrabold text-gray-600 text-[50px] absolute top-1/2 left-1/2 -translate-x-1/2">
+              Primary
+            </h1>
+          </Input>
+
+          <Input
+            type="radio"
+            name="SchoolCategory"
+            checked={selectedCategory === "High School"}
+            onChange={() => setSelectedCategory("High School")}
+            value="High School
+           "
+          >
+            <img
+              className="w-[400px] h-[400px] object-cover rounded-2xl opacity-[0.8] hover:opacity-[1.0] hover:transition-all hover:duration-[0.3s] duration-[0.3s] hover:scale-[1.007]"
+              src="https://images.pexels.com/photos/31039030/pexels-photo-31039030.jpeg"
+              alt=""
+            />
+            <h1 className="font-extrabold text-gray-600 text-[50px] absolute top-1/2 left-1/2 -translate-x-1/2">
+              Secondary
+            </h1>
+          </Input>
+
+          <Input
+            type="radio"
+            name="SchoolCategory"
+            checked={selectedCategory === "University"}
+            onChange={() => setSelectedCategory("University")}
+            value="University
+           "
+          >
+            <img
+              className="w-[400px] h-[400px] object-cover rounded-2xl opacity-[0.8] hover:opacity-[1.0] hover:transition-all hover:duration-[0.3s] duration-[0.3s] hover:scale-[1.007]"
+              src="https://images.pexels.com/photos/11010068/pexels-photo-11010068.jpeg"
+              alt=""
+            />
+            <h1 className="font-extrabold text-gray-600 text-[50px] absolute top-1/2 left-1/2 -translate-x-1/2">
+              Hybrid
+            </h1>
+          </Input>
+
+          <Input
+            type="radio"
+            name="SchoolCategory"
+            checked={selectedCategory === "University"}
+            onChange={() => setSelectedCategory("University")}
+            value="High School
+           "
+          >
+            <img
+              className="w-[400px] h-[400px] object-cover rounded-2xl opacity-[0.8] hover:opacity-[1.0] hover:transition-all hover:duration-[0.3s] duration-[0.3s] hover:scale-[1.007]"
+              src="https://images.pexels.com/photos/159213/hall-congress-architecture-building-159213.jpeg"
+              alt=""
+            />
+            <h1 className="font-extrabold text-gray-600 text-[50px] absolute top-1/2 left-1/2 -translate-x-1/2">
+              University
+            </h1>
+          </Input>
         </form>
-        <p className="p-[10px] text-[40px] text-center mt-[30px] font-light">
-          Featured <span className="font-extrabold">Schools</span>
-        </p>
-        <div>
-          {!serverData ? (
-            <p>Loading...</p>
-          ) : Array.isArray(serverData) ? (
-            // If API returns array directly
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
-              {serverData.map((school) => (
-                <div
-                  key={school._id}
-                  className="bg-white p-4 rounded-lg shadow-md"
-                >
-                  <h3 className="text-xl font-bold mb-2">{school.name}</h3>
-                  {school.images?.[0] && ( // Only show first image if it exists
-                    <img
-                      src={school.images[0]}
-                      alt={`${school.name} - Cover`}
-                      className="w-full h-48 object-cover rounded hover:opacity-[0.7]"
-                    />
-                  )}
-                  <p className="mt-2 text-gray-600">{school.description}</p>
-                </div>
-              ))}
-            </div>
-          ) : serverData.data ? (
-            // If API returns { data: [...] }
-            <div
-              data-aos=""
-              className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4"
-            >
-              {serverData.data.map((school) => (
-                <div
-                  key={school._id}
-                  className="bg-white p-4 rounded-lg shadow-md"
-                >
-                  <h3 className="text-xl font-bold mb-2">{school.name}</h3>
-                  {school.images?.[0] && (
-                    <img
-                      src={school.images[0]}
-                      alt={`${school.name} - Cover`}
-                      className="w-full h-48 object-cover rounded hover:opacity-[0.7] hover:cursor-pointer hover:transition-all hover:duration-[0.4s] hover:scale-[1.009]"
-                    />
-                  )}
-                  <p className="mt-2 text-gray-600">{school.description}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>No schools found.</p>
-          )}
-        </div>
+        {!serverData ? (
+          <Loader />
+        ) : Array.isArray(serverData) ? (
+          <div>
+            {serverData.map((school) => (
+              <div key={school._id}>
+                <h3>{school.name}</h3>
+                {school.images?.[0] && <img src={school.images[0]} alt="" />}
+                <p>{school.description}</p>
+              </div>
+            ))}
+          </div>
+        ) : serverData.data ? (
+          <div className="grid gap-[20px] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-[30px]">
+            {serverData.data.map((school) => (
+              <div className="p-[10px] relative" key={school._id}>
+                <h3 className="font-bold text-center mb-[20px] lg:text-[20px]">
+                  {school.name}
+                </h3>
+                {school.images?.[0] && (
+                  <img
+                    className="lg:w-full lg:h-[400px] object-cover rounded-2xl"
+                    src={school.images[0]}
+                    alt=""
+                  />
+                )}
+                <p className="bg-amber-50 p-[10px] font-bold lg:h-[150px] mt-[10px] rounded-2xl">
+                  {school.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          //this area shows in case the data is not available
+          <div className="mt-[30px]">
+            <img
+              className="justify-self-center lg:w-[600px]"
+              src="/undraw_no-data_ig65.svg"
+              alt=""
+            />
+            <p className="text-center lg:text-[30px] font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
+              Sorry the data is not available at the moment !
+            </p>
+          </div>
+        )}
+        <Link
+          to={"/finding"}
+          className="float-right bg-gradient-to-r from-violet-600 to-indigo-600 p-[10px] font-light text-white m-[30px] hover:bg-transparent hover:text-black
+          hover:border hover:transition-all hover:duration-[0.5s] duration-[0.4s]"
+        >
+          Browse All schools
+        </Link>
       </div>
     </main>
+  );
+}
+
+export function Input({ name, value, checked, onChange, children }) {
+  return (
+    <label
+      className="relative"
+      style={{ cursor: "pointer", display: "inline-block" }}
+    >
+      <input
+        className="relative"
+        type="radio"
+        name={name}
+        value={value}
+        checked={checked}
+        onChange={onChange}
+        style={{ display: "none" }} // Hide the default radio
+      />
+      {children} {/* This is where the <img> will be rendered */}
+    </label>
   );
 }

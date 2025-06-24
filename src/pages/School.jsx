@@ -10,7 +10,7 @@ export default function School() {
     const fetchSingleSchool = async () => {
       try {
         const backUrl = import.meta.env.VITE_BACKEND_URL;
-        const response = await fetch(`${backUrl}/api/schools/${id}`);
+        const response = await fetch(`${backUrl}/api/schools/id/${id}`);
         const data = await response.json();
         console.log("Success school was  fetched");
         setSingleSchool(data);
