@@ -1,49 +1,35 @@
 import React, { useState } from "react";
-import { Form, Link } from "react-router-dom";
-import { FaGoogle } from "react-icons/fa6";
 import { useAuthStore } from "../store/authStore";
+import { FaGoogle } from "react-icons/fa6";
+import { Form, Link } from "react-router-dom";
 
-export default function Signup() {
-  //working on the logic now
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+export default function Login() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const { signUp, isLoading, error, user } = useAuthStore();
-  console.log("user :", user);
+  const { logIn, isLoading, error, user } = useAuthStore();
 
-  //function for handling the form submission
+  //logic for handling any form submission
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await signUp(email, password, name);
-    console.log(name, email, password);
+    await logIn(email, password);
+    console.log(email, password);
   };
-  //TODO:Add some form validation stuff for better useabillity!
+
   return (
-    <main className="bg-gradient-to-r from-violet-600 to-indigo-600 h-screen flex justify-center items-center">
+    <main className="bg-gradient-to-r from-violet-600 to-indigo-600 flex justify-center items-center h-screen">
       <div className="bg-white p-[20px] rounded-2xl text-center">
         <h1 className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent font-bold lg:text-[30px]">
-          Hello admin create an account
+          Hello admin Login To Your account
         </h1>
         <h2>Enter your details to proceed</h2>
         <div className="flex items-center gap-[20px] justify-center bg-white p-[10px] border rounded-2xl font-bold hover:bg-gray-50 hover:cursor-pointer hover:transition-all duration-[0.3s] hover:duration-[0.3s] mt-[30px]">
           <FaGoogle />
-          <h1>Register using google</h1>
+          <h1>Login using google</h1>
         </div>
         <p className="mt-[30px]">---Or proceed with your email----</p>
         <Form onSubmit={handleSubmit} method="post" className="lg:w-[600px]">
-          <label className="float-left font-light" htmlFor="name">
-            Full names
-          </label>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            type="text"
-            placeholder="Full Names"
-            className="bg-white border-gray-700 border rounded-[5px] lg:p-[10px] w-full p-[10px]"
-          />
-
           <label className="float-left font-light" htmlFor="email">
             Email adress
           </label>
@@ -54,6 +40,7 @@ export default function Signup() {
             placeholder="Email Adress"
             className="bg-white border rounded-[5px] lg:p-[10px] w-full p-[10px]"
           />
+          {/* <small className="m-[5px] text-red-500 float-left">{error}</small> */}
 
           <label className="float-left font-light" htmlFor="email">
             Password
@@ -66,16 +53,6 @@ export default function Signup() {
             className="bg-white border-gray-700 border rounded-[5px] lg:p-[10px] w-full p-[10px]"
           />
 
-          <label className="float-left font-light" htmlFor="email">
-            Confirm Password
-          </label>
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            placeholder="Confirm Password"
-            className="bg-white border-gray-700 border rounded-[5px] lg:p-[10px] w-full p-[10px]"
-          />
           <button
             className={`
                 bg-gradient-to-r from-violet-600 to-indigo-600 
@@ -122,9 +99,9 @@ export default function Signup() {
           </button>
         </Form>
         <h3 className="my-[20px]">
-          Already have an account ?{" "}
-          <Link to={"/login"} className="font-bold text-blue-600">
-            Sign in here
+          Don't have an account ?{" "}
+          <Link to={"/signup"} className="font-bold text-blue-600">
+            Sign up here
           </Link>
         </h3>
       </div>

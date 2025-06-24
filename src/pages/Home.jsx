@@ -41,6 +41,26 @@ export default function Home() {
     });
   });
 
+  //prefetch logic to improve the performance of the website so as to improve the user xperience with ease
+
+  const preFetch = (path) => {
+    const link = document.createElement("link");
+    link.rel = "prefetch";
+    link.href = path;
+    link.as = "document";
+    document.head.appendChild(link);
+
+    if (path === "/finding") {
+      fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL || "http://localhost:4000"
+        } /api/schools`
+      )
+        .then((response) => response.json())
+        .catch(() => {});
+    }
+  };
+
   return (
     <main className=" h-full p-[10px]">
       <div
@@ -133,9 +153,9 @@ export default function Home() {
           <Input
             type="radio"
             name="SchoolCategory"
-            checked={selectedCategory === "University"}
-            onChange={() => setSelectedCategory("University")}
-            value="University
+            checked={selectedCategory === "Hybrid"}
+            onChange={() => setSelectedCategory("Hybrid")}
+            value="Hybrid
            "
           >
             <img
@@ -162,7 +182,7 @@ export default function Home() {
               alt=""
             />
             <h1 className="font-extrabold text-gray-600 text-[50px] absolute top-1/2 left-1/2 -translate-x-1/2">
-              University
+              Higher <br /> Education
             </h1>
           </Input>
         </form>
@@ -212,6 +232,8 @@ export default function Home() {
           </div>
         )}
         <Link
+          onMouseEnter={() => preFetch("/finding")}
+          onTouchStart={() => preFetch("/finding")}
           to={"/finding"}
           className="float-right bg-gradient-to-r from-violet-600 to-indigo-600 p-[10px] font-light text-white m-[30px] hover:bg-transparent hover:text-black
           hover:border hover:transition-all hover:duration-[0.5s] duration-[0.4s]"

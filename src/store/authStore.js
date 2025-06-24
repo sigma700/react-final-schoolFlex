@@ -88,4 +88,44 @@ export const useAuthStore = create((set) => ({
       throw error;
     }
   },
+
+  //login logic goes here just like the other signup logic not much of a difference
+  logIn: async (email, password) => {
+    set({ isLoading: true, error: null });
+
+    //performing the fetching from our server
+
+    try {
+      const url = import.meta.env.VITE_BACKEND_URL;
+
+      const response = await fetch(`${url}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json(); // this part should always make sure that it exists to make sure that the data is recceived in  form of json
+      console.log("data : ", data);
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      set({
+        user: data.user,
+        isAuthenticated: true,
+        isLoading: false,
+      });
+
+      //returning the data that we have received from the response
+      return data;
+    } catch (error) {
+      set({
+        isLoading: false,
+        error: error.message,
+      });
+      throw error;
+    }
+  },
 }));

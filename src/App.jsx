@@ -18,6 +18,7 @@ import Dashboard from "./pages/Dashboard";
 import Layout from "./pages/components/Layout";
 import Signup from "./pages/Signup";
 import Verify from "./pages/Verify";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
   { path: "/dashboard", element: <Dashboard /> },
   { path: "/signup", element: <Signup /> },
   { path: "/verify", element: <Verify /> },
+  { path: "/login", element: <Login /> },
 ]);
 
 export default function App() {
