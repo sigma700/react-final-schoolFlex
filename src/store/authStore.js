@@ -128,4 +128,38 @@ export const useAuthStore = create((set) => ({
       throw error;
     }
   },
+
+  //LOgic for protecting ceratin routes using the middlware that we had created in our server
+
+  checkAuth: async () => {
+    set({ isCheckingAuth: true, error: null });
+
+    try {
+      const url = import.meta.env.VITE_BACKEND_URL;
+      const response = await fetch(`${url}/api/auth/check-auth`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-type": "application/json", // note no body is passed because its a get request
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("There was a problem with the response !");
+        console.log(data.message);
+      }
+
+      const data = await response.json();
+      //pointblank if the user is not logged in then there
+      console.log(data);
+
+      set({
+        isCheckingAuth: false,
+        error: data.message,
+      });
+    } catch (error) {
+      set({ isCheckingAuth: false, isAuthenticated: true, user: null });
+      console.log(error);
+    }
+  },
 }));

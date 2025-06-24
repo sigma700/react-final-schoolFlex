@@ -19,6 +19,8 @@ import Layout from "./pages/components/Layout";
 import Signup from "./pages/Signup";
 import Verify from "./pages/Verify";
 import Login from "./pages/Login";
+import { useAuthStore } from "./store/authStore";
+import { useEffect } from "react";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -33,6 +35,13 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
+  const { isCheckingAuth, checkAuth, isAuthenticated, user } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+  console.log(user);
+
   return (
     <main>
       <RouterProvider router={router} />
