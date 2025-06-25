@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa6";
 import { useAuthStore } from "../store/authStore";
 
@@ -13,12 +13,21 @@ export default function Signup() {
   console.log("user :", user);
 
   //function for handling the form submission
+  //adding the redirect functionalty!
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await signUp(email, password, name);
-    console.log(name, email, password);
+    try {
+      await signUp(email, password, name);
+      navigate("/verify");
+      console.log(name, email, password);
+    } catch (error) {
+      console.error("Sign Up failed !", error);
+    }
   };
+
   //TODO:Add some form validation stuff for better useabillity!
   return (
     <main className="bg-gradient-to-r from-violet-600 to-indigo-600 h-screen flex justify-center items-center">
@@ -114,7 +123,7 @@ export default function Signup() {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                Just a sec...
+                <Link to={"/verify"}>Just a sec...</Link>
               </div>
             ) : (
               "Create Account"
