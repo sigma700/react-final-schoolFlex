@@ -1,3 +1,5 @@
+import { create } from "zustand";
+
 export const useSchoolStore = create((set) => ({
   //states
 
@@ -9,28 +11,31 @@ export const useSchoolStore = create((set) => ({
 
   //actions
 
-  createSchool: async (name, contacts, location, category, system) => {
+  createSchool: async (schoolData) => {
     set({ isLoading: true, error: null });
 
     try {
       const url = import.meta.env.VITE_BACKEND_URL;
-      const response = fetch(`${url}/api/schools/create`, {
+      const response = await fetch(`${url}/api/schools/create`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
         // credentials: "include",
-        body: JSON.stringify({ name, contacts, location, category, system }),
+        body: JSON.stringify({
+          ...schoolData,
+        }),
       });
-      const data = await response.json;
+      const data = await response.json();
+
       console.log("data", data);
       if (!response.ok) {
-        console.log(data.message);
+        console.log("An error occured with making the response !");
       }
 
       set({
         isLoading: false,
-        school: data.school,
+        // school: data.schools,
       });
 
       return data;

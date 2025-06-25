@@ -1,76 +1,27 @@
 import React, { useState } from "react";
+// import { useAuthStore } from "../store/authStore";
+import { useSchoolStore } from "../store/schoolStore";
 
 export default function Listing() {
-  const [formData, setFormData] = useState({
-    name: "",
-    type: "",
-    fee: "",
-    location: "",
-    system: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  const [name, setName] = useState("");
+  const [contacts, setContacts] = useState("");
+  const [category, setCategory] = useState("");
+  const [location, setLocation] = useState("");
+  const [system, setSystem] = useState("");
+  const [fee, setFee] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const { createSchool, isLoading, error, value } = useSchoolStore();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setError(null);
-    setSuccess(false);
-
-    try {
-      const formPayload = new FormData();
-      console.log("Form Data", formData);
-
-      Object.entries(formData).forEach(([key, value]) => {
-        if (value !== null && value !== undefined) {
-          formPayload.append(key, value);
-        }
-      });
-
-      for (let [key, value] of formPayload.entries()) {
-        console.log(key, value);
-      }
-      const response = await fetch("http://localhost:4000/api/schools/create", {
-        method: "POST",
-        headers: {
-          // "Content-Type": "application/json",
-          // Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: formPayload,
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to create school");
-      }
-
-      if (data.success) {
-        setSuccess(true);
-        setFormData({
-          name: "",
-          location: "",
-          type: "",
-          fee: "",
-          contact: "",
-          system: "",
-          image: null,
-        });
-      }
-    } catch (error) {
-      setError("Could not create school");
-    } finally {
-      setIsSubmitting(false);
-    }
+    await createSchool({
+      name,
+      location,
+      contacts,
+      category,
+      system,
+    });
   };
-
-  //try catch block so as to facilitate api requests
 
   return (
     <main className="text-black h-full flex items-center justify-center">
@@ -100,17 +51,6 @@ export default function Listing() {
             margin: "0 auto",
           }}
         >
-          {error && (
-            <div className="bg-red-500 text-black p-[10px] rounded-[10px] mt-[20px]">
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="bg-green-500 text-black p-[10px] rounded-[10px] mt-[30px]">
-              School created succesfully thank you{" "}
-            </div>
-          )}
           <h2 className="lg:text-[30px] text-blue-600 font-extrabold text-center text-[30px]">
             Upload an Image
           </h2>
@@ -127,9 +67,9 @@ export default function Listing() {
             <FormSpacer>
               <Label text="Name" />
               <Input
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
+                // name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 type="text"
                 placeholder="Enter school name"
               />
@@ -138,9 +78,9 @@ export default function Listing() {
             <FormSpacer>
               <Label text="Location" />
               <Input
-                name="location"
-                value={formData.location}
-                onChange={handleChange}
+                // name="location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
                 type="text"
                 placeholder="School Location"
               />
@@ -149,9 +89,9 @@ export default function Listing() {
             <FormSpacer>
               <Label text="Type" />
               <Input
-                name="type"
-                value={formData.type}
-                onChange={handleChange}
+                // name="type"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
                 type="text"
                 placeholder="Public/Private/International"
               />
@@ -160,9 +100,9 @@ export default function Listing() {
             <FormSpacer>
               <Label text="Fees per term" />
               <Input
-                name="fee"
-                value={formData.fee}
-                onChange={handleChange}
+                // name="fee"
+                value={fee} //make a chck here for the store !
+                onChange={(e) => setFee(e.target.value)}
                 type="text"
                 placeholder="School fee per term"
               />
@@ -174,9 +114,9 @@ export default function Listing() {
               Details"
               />
               <Input
-                name="contact"
-                value={formData.contact}
-                onChange={handleChange}
+                // name="contact"
+                value={contacts}
+                onChange={(e) => setContacts(e.target.value)}
                 type="text"
                 placeholder="Number or email adress"
               />
@@ -185,9 +125,9 @@ export default function Listing() {
             <FormSpacer>
               <Label text="School system" />
               <Input
-                name="system"
-                value={formData.system}
-                onChange={handleChange}
+                // name="system"
+                value={system}
+                onChange={(e) => setSystem(e.target.value)}
                 type="text"
                 placeholder="CBC ,  8-4-4 etc.."
               />
@@ -196,9 +136,9 @@ export default function Listing() {
             <button
               className="bg-blue-500 text-white p-[10px] rounded-[10px] font-extralight w-full mt-6 hover:bg-white hover:text-black hover:cursor-pointer hover:transition-colors hover:duration-[0.3s] hover:border duration-[0.2s]"
               type="submit"
-              disabled={isSubmitting}
+              disabled={isLoading}
             >
-              {isSubmitting ? "Creating school.." : "Add your school"}
+              {isLoading ? "Creating school.." : "Add your school"}
             </button>
           </form>
         </div>
