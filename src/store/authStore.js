@@ -11,7 +11,7 @@ export const useAuthStore = create((set) => ({
 
   // Actions
   signUp: async (email, password, name) => {
-    set({ isLoading: true, error: null });
+    set({ isLoading: true, error: null, isAuthenticated: false });
     try {
       const url = import.meta.env.VITE_BACKEND_URL;
       // console.log(url);

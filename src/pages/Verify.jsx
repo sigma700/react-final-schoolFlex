@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuthStore } from "../store/authStore";
 import Toast from "./components/toast";
 import ToastElement from "./components/toast";
+import { useNavigate } from "react-router-dom";
 
 export default function Verify() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -23,6 +24,8 @@ export default function Verify() {
     }
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const otpCode = otp.join("");
@@ -35,6 +38,7 @@ export default function Verify() {
     try {
       await verifMail(otpCode);
       console.log("Email verified successfully !");
+      navigate("/listing");
     } catch (error) {
       console.log(error.message);
     }
@@ -71,11 +75,11 @@ export default function Verify() {
             {isLoading ? "Verifying..." : "Verify"}
           </button>
         </form>
-        {error && (
+        {/* {error && (
           <p className="text-red-500 mb-4 font-bold lg:text-[20px] transition-all duration-[0.3s]">
             {error}
           </p>
-        )}
+        )} */}
         <span className="text-sky-600 text-sm">
           Didn&apos;t receive the code?{" "}
           <a href="#" className="text-sky-500 underline">
