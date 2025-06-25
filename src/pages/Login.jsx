@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuthStore } from "../store/authStore";
 import { FaGoogle } from "react-icons/fa6";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,10 +10,11 @@ export default function Login() {
   const { logIn, isLoading, error, user } = useAuthStore();
 
   //logic for handling any form submission
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     await logIn(email, password);
+    navigate("/listing");
     console.log(email, password);
   };
 
@@ -91,10 +92,10 @@ export default function Login() {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                Just a sec...
+                <Link to={"/listing"}>Just a sec...</Link>
               </div>
             ) : (
-              "Create Account"
+              "Login"
             )}
           </button>
         </Form>
