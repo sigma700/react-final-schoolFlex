@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./components/navbar";
 import { Form, Link } from "react-router-dom";
 import { Slidetabs } from "./components/navbar-lg";
+import { useRef } from "react";
 
 export default function Finding() {
   const [schools, setSchools] = useState([]);
@@ -9,7 +10,15 @@ export default function Finding() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [bgLoaded, setBgLoaded] = useState(false);
+  const bgImageRef = useRef(null);
   // const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/milad-fakurian-GJKx5lhwU3M-unsplash.jpg";
+    img.onload = () => setBgLoaded(true);
+    bgImageRef.current = img;
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -91,20 +100,54 @@ export default function Finding() {
   };
 
   return (
-    <main className="bg-[#fbf4da] h-full text-black">
+    <main
+      className={`bg-[#fbf4da] h-full text-black relative ${
+        bgLoaded ? "" : "bg-gray-200"
+      }`}
+    >
+      {!bgLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <div className="loader"></div>
+        </div>
+      )}
       <style>
         {`
-                    main {
-                            min-height: full;
-                            width: 100vw;
-                            background-image: url('/milad-fakurian-GJKx5lhwU3M-unsplash.jpg');
-                            background-size: cover;
-                            background-position: center;
-                            background-repeat: no-repeat;
-                            margin: 0;
-                            padding: 0;
-                    }
-            `}
+          main {
+            min-height: full;
+            width: 100vw;
+            background-image: url('/milad-fakurian-GJKx5lhwU3M-unsplash.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            opacity : ${bgLoaded ? 1 : 0}
+          }
+          
+          /* Added loader styles */
+          .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid rgba(0, 24, 34, 0.2);
+            border-bottom-color: #001822;
+            border-radius: 50%;
+            display: inline-block;
+            animation: rotation 1s linear infinite;
+          }
+          
+          @keyframes rotation {
+            0% { transform: rotate(0deg) }
+            100% { transform: rotate(360deg) }
+          }
+          
+          .loader-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            width: 100%;
+          }
+        `}
       </style>
       <div className="flex gap-[3px] items-center">
         <h1 className="lg:p-[10px] lg:text-[30px]">
@@ -165,15 +208,15 @@ export default function Finding() {
               </p>
               <p className="mb-2">
                 <span className="font-semibold">Location:</span>{" "}
-                {schools[0].location || "N/A"}
+                {schools[0].location.county || "N/A"}
               </p>
               <p className="mb-2">
                 <span className="font-semibold">Type:</span>{" "}
                 {schools[0].type || "N/A"}
               </p>
               <p className="mb-2">
-                <span className="font-semibold">Fee:</span>{" "}
-                {schools[0].fee || "N/A"}
+                <span className="font-semibold">Minimum fee: </span> KES{" "}
+                {schools[0].fee.min || "N/A"}
               </p>
               {/* Add more fields as needed */}
               <button className="bg-[#e1eaeb] p-[10px] rounded-[10px] font-light border hover:bg-[#001822] hover:text-white hover:border hover:border-none hover:transition-colors hover:duration-[0.4s] hover:cursor-pointer duration-[0.3s] mt-4">
@@ -225,9 +268,9 @@ export default function Finding() {
           </h2>
 
           {isLoading ? (
-            <p className="text-[30px] text-center items-center h-full">
-              loading...
-            </p>
+            <div className="loader-container">
+              <span className="loader"></span>
+            </div>
           ) : error ? (
             <p>Error : {error}</p>
           ) : schools.length > 1 || !searchQuery ? (

@@ -21,6 +21,7 @@ import Verify from "./pages/Verify";
 import Login from "./pages/Login";
 import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
+import Contacts from "./pages/Contacts";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
   { path: "/signup", element: <Signup /> },
   { path: "/verify", element: <Verify /> },
   { path: "/login", element: <Login /> },
+  { path: "/contact-us", element: <Contacts /> },
 ]);
 
 export default function App() {
