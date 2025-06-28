@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-// import React from "react";
 import { useParams } from "react-router";
 
 export default function School() {
   const [singleSchool, setSingleSchool] = useState(null);
   const { id } = useParams();
+
   useEffect(() => {
     if (!id) return;
     const fetchSingleSchool = async () => {
@@ -12,23 +12,22 @@ export default function School() {
         const backUrl = import.meta.env.VITE_BACKEND_URL;
         const response = await fetch(`${backUrl}/api/schools/id/${id}`);
         const data = await response.json();
-        console.log("Success school was  fetched");
         setSingleSchool(data);
       } catch (error) {
-        console.log("There was an error with geting the school", error.message);
+        console.log("Error fetching school", error.message);
       }
     };
     fetchSingleSchool();
   }, [id]);
+
   return (
-    <main className="bg-[#fbf4da] h-full p-[10px] w-screen">
+    <main className="min-h-screen bg-[#fbf4da] p-4 md:p-8">
       <button
         onClick={() => window.history.back()}
-        className="flex items-center gap-2 bg-white/80 hover:bg-white rounded-full px-4 py-2 shadow transition hover:cursor-pointer hover:scale-[1.05] hover:transition-all hover:duration-[0.3s] duration-[0.4s]"
-        aria-label="Go back"
+        className="mb-6 flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 shadow transition hover:scale-[1.03] hover:bg-white"
       >
         <svg
-          className="w-5 h-5 text-blue-600"
+          className="h-5 w-5 text-blue-600"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -40,68 +39,105 @@ export default function School() {
             d="M15 19l-7-7 7-7"
           />
         </svg>
-        <span className="text-blue-600 font-medium">Back</span>
+        <span className="font-medium text-blue-600">Back</span>
       </button>
-      <div className="h-full lg:flex items-center justify-center w-screen">
-        {singleSchool ? (
-          <div className="text-black">
-            <h1 className="text-[20px] text-center lg:text-[30px] mb-[30px]">
-              {singleSchool.data.name}
-            </h1>
 
-            <img
-              className="rounded-[10px] w-[350px] lg:w-[700px] lg:justify-self-center"
-              src={singleSchool.data.images[0]}
-              alt=""
-            />
-            <p className="mt-[30px]">{singleSchool.data.description}</p>
+      {singleSchool ? (
+        <div className="mx-auto max-w-4xl rounded-xl bg-white p-6 shadow-md md:p-8">
+          <h1 className="mb-6 text-center text-3xl font-bold text-gray-800 md:text-4xl">
+            {singleSchool.data.name}
+          </h1>
 
-            <ul className="mt-[20px] flex flex-col justify-center gap-[10px]">
-              <div className="flex items-center gap-[70px] lg:gap-[110px]">
-                <p className="bg-[#001822] text-white p-[10px] rounded-[10px]">
-                  Location :{" "}
-                </p>{" "}
-                :<p>{singleSchool.data.location}</p>
+          <div className="mb-8 grid gap-6 md:grid-cols-2">
+            <div className="overflow-hidden rounded-xl">
+              <img
+                className="h-auto w-full object-cover shadow-md"
+                src={singleSchool.data.images[0]}
+                alt={singleSchool.data.name}
+              />
+            </div>
+
+            <div className="space-y-6">
+              <div className="rounded-lg bg-blue-50 p-4 shadow-sm">
+                <h2 className="mb-3 text-xl font-semibold text-blue-800">
+                  About
+                </h2>
+                <p className="text-gray-700">{singleSchool.data.description}</p>
               </div>
 
-              <div className="flex items-center gap-[30px] lg:gap-[40px]">
-                <p className="bg-[#001822] text-white p-[10px] rounded-[10px]">
-                  Education System :{" "}
-                </p>{" "}
-                :<p>{singleSchool.data.system}</p>
-              </div>
+              <div className="grid grid-cols-1 gap-4 rounded-lg bg-gray-50 p-4 shadow-sm sm:grid-cols-2">
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm font-semibold text-gray-500">
+                      Location
+                    </p>
+                    <p className="font-medium">
+                      {singleSchool.data.location.county}
+                    </p>
+                  </div>
 
-              <div className="flex items-center gap-[30px] lg:gap-[35px]">
-                <p className="bg-[#001822] text-white p-[10px] rounded-[10px]">
-                  Current Population :{" "}
-                </p>
-                :<p>{singleSchool.data.population} Students</p>
-              </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-500">
+                      Education System
+                    </p>
+                    <p className="font-medium">
+                      {singleSchool.data.system.join(", ")}
+                    </p>
+                  </div>
+                </div>
 
-              <div className="flex items-center gap-[20px] lg:gap-[105px]">
-                <p className="bg-[#001822] text-white p-[10px] rounded-[10px]">
-                  Fee/Term :{" "}
-                </p>{" "}
-                :<p>{singleSchool.data.fee}</p>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm font-semibold text-gray-500">
+                      Population
+                    </p>
+                    <p className="font-medium">
+                      {singleSchool.data.population} Students
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-semibold text-gray-500">
+                      Fee Range
+                    </p>
+                    <p className="font-medium">
+                      KES {singleSchool.data.fee.min} -{" "}
+                      {singleSchool.data.fee.max}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </ul>
-            <p className="text-[20px] mt-[30px] lg:text-[30px]">
-              Contact Details : {singleSchool.data.contacts}
+            </div>
+          </div>
+
+          <div className="mb-8">
+            <h2 className="mb-4 text-xl font-semibold text-gray-800">
+              Contact Details
+            </h2>
+            <p className="text-gray-700">
+              {singleSchool.data.contacts ||
+                "Contact information not available"}
             </p>
+          </div>
+
+          <div className="rounded-xl shadow-md">
             <iframe
-              className="w-[350px]  rounded-[10px]"
+              className="h-64 w-full rounded-xl md:h-96"
               src={singleSchool.data.map}
-              width="600"
-              height="450"
-              allowfullscreen=""
+              allowFullScreen
               loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
+              referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
-        ) : (
-          <p className="text-black">Loading school data....</p>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="flex h-64 items-center justify-center">
+          <div className="text-center">
+            <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+            <p className="mt-4 text-gray-600">Loading school information...</p>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
