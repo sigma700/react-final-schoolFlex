@@ -20,7 +20,9 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
-    const url = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
+    const url =
+      import.meta.env.VITE_BACKEND_URL ||
+      "https://backend-for-edufind.onrender.com";
     console.log(url);
 
     fetch(`${url}/api/schools/category/${selectedCategory}`)

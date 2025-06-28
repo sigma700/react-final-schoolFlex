@@ -80,6 +80,7 @@ export default function Finding() {
 
   const addToCollection = async (school) => {
     try {
+      const url = import.meta.env.VITE_BACKEND_URL;
       const response = await fetch("http://localhost;4000/api/collections", {
         method: "POST",
         headers: {
